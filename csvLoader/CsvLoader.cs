@@ -42,7 +42,7 @@ namespace excelToolsCore.csvLoader
 
             for (int i = startingRow; i < rawData.Length; i++)
             {
-                T t = await GetTAsync(rawData[i], new U()).ConfigureAwait(false);
+                T t = await new U().GetTAsync(rawData[i]).ConfigureAwait(false);
                 buildedData.Add(t);
             }
 
@@ -56,26 +56,13 @@ namespace excelToolsCore.csvLoader
 
             for (int i = startingRow; i < rawData.Length; i++)
             {
-                T t = await GetTAsync(rawData[i], new U()).ConfigureAwait(false);
+                T t = await new U().GetTAsync(rawData[i]).ConfigureAwait(false);
                 buildedData.Add(t);
             }
 
             return buildedData;
         }
 
-        public void SetStartingRow(int row)
-        {
-            startingRow = row;
-        }
-
-        private async Task<T> GetTAsync<T>(string[] data, ICsvDataBuilderAsync<T> builder)
-        {
-            await Task.Run(() =>
-            {
-                builder.BuildAsync(data).ConfigureAwait(false);
-            });
-
-            return await builder.GetTAsync();
-        }
+        public void SetStartingRow(int row) => startingRow = row;
     }
 }
